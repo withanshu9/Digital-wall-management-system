@@ -1,0 +1,74 @@
+# Digital Wall Management System
+
+A full-stack web application for an outdoor advertising marketplace platform connecting wall owners and advertisers.
+
+## User Review Required
+
+> [!IMPORTANT]
+> A valid `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` will be needed in the `.env` file to fully test the payment integration. For testing without real keys, I will configure the app to bypass verification if keys are not provided, or I can use dummy test keys for UI demo.
+> Similarly, a valid MongoDB connection string is required. I will use a local MongoDB instance (`mongodb://localhost:27017/dwms`) by default. Please ensure MongoDB is running locally or provide a remote URI.
+
+## Proposed Changes
+
+### Backend Setup
+#### [NEW] backend/package.json
+Dependencies: express, mongoose, bcrypt, jsonwebtoken, dotenv, cors, razorpay, multer (for images).
+#### [NEW] backend/server.js
+Setup express app, connect to MongoDB, setup route prefixes.
+#### [NEW] backend/models/User.js
+User schema with role (advertiser, owner, admin) and auth details.
+#### [NEW] backend/models/Wall.js
+Wall schema (title, type, location, pricing, images, owner, status, daily traffic).
+#### [NEW] backend/models/Booking.js
+Booking schema (advertiser, wall, dates, pricing breakdown, status, razorpay_order_id).
+
+### Backend Controllers & Routes
+#### [NEW] backend/controllers/authController.js
+Register and login logic.
+#### [NEW] backend/routes/authRoutes.js
+Auth endpoints.
+#### [NEW] backend/controllers/wallController.js
+Wall CRUD, approval by admin, public listing.
+#### [NEW] backend/routes/wallRoutes.js
+Wall endpoints.
+#### [NEW] backend/controllers/bookingController.js
+Booking creation, Razorpay order generation, payment verification, CPM calculations.
+#### [NEW] backend/routes/bookingRoutes.js
+Booking endpoints.
+
+### Frontend Setup
+#### [NEW] frontend/package.json
+React (Vite), react-router-dom, axios, tailwindcss (if requested, else plain css). *Note: Instruction says "Vanilla CSS for maximum flexibility and control. Avoid using TailwindCSS unless the USER explicitly requests it". I will use vanilla CSS.*
+#### [NEW] frontend/index.html & frontend/src/main.jsx
+Entry points.
+#### [NEW] frontend/src/index.css
+Global styles containing the required outdoor advertising theme (brick wall background, concrete cards, LED glow).
+
+### Frontend Components & Pages
+#### [NEW] frontend/src/components/Navbar.jsx
+Responsive navbar.
+#### [NEW] frontend/src/pages/Home.jsx
+Wall listings with poster overlay previews.
+#### [NEW] frontend/src/pages/Login.jsx & Register.jsx
+Auth pages.
+#### [NEW] frontend/src/pages/WallDetail.jsx
+Wall details, CPM calculator, smart price calculator, and booking/checkout UI.
+#### [NEW] frontend/src/pages/AdvertiserDashboard.jsx
+Active/past campaigns, spend, ROI.
+#### [NEW] frontend/src/pages/OwnerDashboard.jsx
+Manage walls, view earnings.
+#### [NEW] frontend/src/pages/AdminDashboard.jsx
+Wall approvals, analytics.
+
+## Verification Plan
+
+### Automated Tests
+- Build verification for both backend and frontend.
+
+### Manual Verification
+- Start backend and frontend servers.
+- Register Admin, Owner, Advertiser users.
+- Owner creates walls.
+- Admin approves walls.
+- Advertiser browses and books a wall (testing Razorpay flow and price calculations).
+- Verify dashboard data for all three roles.

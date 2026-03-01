@@ -1,0 +1,2 @@
+# Digital wall management system
+ Digital Wall Management System (DWMS) is a web-based platform that connects wall owners and advertisers for seamless outdoor advertisement booking and management. The system enables advertisers to discover available wall spaces across different cities, book advertisement slots, make secure payments, and track campaign performance — all from a centralized dashboard.
