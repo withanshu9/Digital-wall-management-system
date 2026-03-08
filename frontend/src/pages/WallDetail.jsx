@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import defaultWallImg from '../assets/images/default-wall.png';
 import axios from 'axios';
 import useAuth from '../utils/useAuth';
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { addDays } from 'date-fns';
 
 const WallDetail = () => {
     const { id } = useParams();
@@ -11,9 +16,15 @@ const WallDetail = () => {
     const [loading, setLoading] = useState(true);
 
     // Booking state
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [promoCode, setPromoCode] = useState('');
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+    const startDate = dateRange[0].startDate.toISOString().split('T')[0];
+    const endDate = dateRange[0].endDate.toISOString().split('T')[0];
 
     // Custom dummy data for demo
     const DUMMY_WALLS = [
@@ -21,13 +32,13 @@ const WallDetail = () => {
             _id: '1', title: 'Times Square Style Billboard', type: 'Outdoor LED Video Wall',
             city: 'Mumbai', location: 'Bandra West Highway', width: 40, height: 20, area: 800,
             pricingType: 'per day', basePrice: 25000, trafficEstimate: 150000, owner: { name: 'AdTech India' },
-            images: ['https://images.unsplash.com/photo-1596489392276-88af700947ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80']
+            images: [defaultWallImg]
         },
         {
             _id: '2', title: 'Connaught Place Premium Hoarding', type: 'Premium Metro Wallscape',
             city: 'Delhi', location: 'CP Inner Circle', width: 30, height: 15, area: 450,
             pricingType: 'monthly', basePrice: 450000, trafficEstimate: 85000, owner: { name: 'Capital Media Ads' },
-            images: ['https://images.unsplash.com/photo-1542204637-e67bc7d41e48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80']
+            images: [defaultWallImg]
         }
     ];
 
@@ -46,6 +57,23 @@ const WallDetail = () => {
         };
         fetchWall();
     }, [id]);
+
+    const getDisabledDates = () => {
+        if (!wall?.activeBookings) return [];
+        let disabled = [];
+        wall.activeBookings.forEach(b => {
+            let current = new Date(b.startDate);
+            const end = new Date(b.endDate);
+            // Ensure timezone consistency
+            current.setHours(0, 0, 0, 0);
+            end.setHours(0, 0, 0, 0);
+            while (current <= end) {
+                disabled.push(new Date(current));
+                current.setDate(current.getDate() + 1);
+            }
+        });
+        return disabled;
+    };
 
     // Derived state for calculation
     const getDaysDiff = () => {
@@ -171,9 +199,10 @@ const WallDetail = () => {
                     {/* Main Hero Image */}
                     <div className="card-concrete mb-6 billboard-glow" style={{ padding: '0.5rem', border: '5px solid #2a2e35' }}>
                         <img
-                            src={wall.images?.[0]}
+                            src={wall.images?.[0] || defaultWallImg}
                             alt={wall.title}
                             style={{ width: '100%', height: 'auto', maxHeight: '500px', objectFit: 'cover', borderRadius: '4px' }}
+                            onError={(e) => { e.target.onerror = null; e.target.src = defaultWallImg; }}
                         />
                     </div>
 
@@ -222,29 +251,17 @@ const WallDetail = () => {
                             </div>
                         ) : (
                             <>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                                    <div className="form-group mb-0">
-                                        <label className="text-xs text-muted block mb-1">Start Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-control"
-                                            style={{ padding: '0.5rem', fontSize: '0.9rem' }}
-                                            value={startDate}
-                                            onChange={e => setStartDate(e.target.value)}
-                                            min={new Date().toISOString().split('T')[0]}
-                                        />
-                                    </div>
-                                    <div className="form-group mb-0">
-                                        <label className="text-xs text-muted block mb-1">End Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-control"
-                                            style={{ padding: '0.5rem', fontSize: '0.9rem' }}
-                                            value={endDate}
-                                            onChange={e => setEndDate(e.target.value)}
-                                            min={startDate || new Date().toISOString().split('T')[0]}
-                                        />
-                                    </div>
+                                <div className="mb-4 d-flex justify-content-center overflow-x-auto" style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px', background: 'white' }}>
+                                    <DateRangePicker
+                                        onChange={item => setDateRange([item.selection])}
+                                        showSelectionPreview={true}
+                                        moveRangeOnFirstSelection={false}
+                                        months={1}
+                                        ranges={dateRange}
+                                        direction="horizontal"
+                                        minDate={new Date()}
+                                        disabledDates={getDisabledDates()}
+                                    />
                                 </div>
 
                                 {/* Real-time Pricing Calculator */}

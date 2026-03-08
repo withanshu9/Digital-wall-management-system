@@ -6,6 +6,8 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const wallRoutes = require('./routes/wallRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,6 +28,7 @@ const Booking = require('./models/Booking');
 app.use('/api/auth', authRoutes);
 app.use('/api/walls', wallRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/dashboards', dashboardRoutes);
 
 // Cron Job: Run every midnight to check for expired bookings
 cron.schedule('0 0 * * *', async () => {
@@ -34,17 +37,15 @@ cron.schedule('0 0 * * *', async () => {
     const now = new Date();
     // Find approved bookings where endDate has passed
     const expiredBookings = await Booking.find({
-      status: 'approved',
+      bookingStatus: 'confirmed',
       endDate: { $lt: now }
     });
 
     for (let booking of expiredBookings) {
       // Update booking status to completed
-      booking.status = 'completed';
+      booking.bookingStatus = 'completed';
       await booking.save();
 
-      // Make the wall available again
-      await Wall.findByIdAndUpdate(booking.wall, { availability: 'available' });
       console.log(`[Cron Job] Completed booking ${booking._id}, Relisted wall ${booking.wall}`);
     }
     console.log(`[Cron Job] Processed ${expiredBookings.length} expired bookings.`);

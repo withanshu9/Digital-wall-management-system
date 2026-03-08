@@ -1,15 +1,42 @@
 const Wall = require('../models/Wall');
+const Booking = require('../models/Booking');
 
-// Get all walls (public listing)
+
 exports.getWalls = async (req, res) => {
     try {
         const filters = { status: 'approved' };
 
         if (req.query.city) filters.city = req.query.city;
         if (req.query.type) filters.type = req.query.type;
-        if (req.query.availability) filters.availability = req.query.availability;
 
-        const walls = await Wall.find(filters).populate('owner', 'name email');
+        let walls = await Wall.find(filters).populate('owner', 'name email').lean();
+
+        const currentDate = new Date();
+        for (let wall of walls) {
+            wall.availability_badge = 'Available';
+            const activeBookings = await Booking.find({
+                wall: wall._id,
+                bookingStatus: { $in: ['pending', 'confirmed', 'active'] },
+                endDate: { $gte: currentDate }
+            });
+
+            if (wall.availability === 'booked') {
+                wall.availability_badge = 'Not Available';
+            } else if (activeBookings.length > 0) {
+                const isCurrentlyBooked = activeBookings.some(b => new Date(b.startDate) <= currentDate && new Date(b.endDate) >= currentDate);
+                if (isCurrentlyBooked) {
+                    wall.availability_badge = 'Not Available';
+                } else {
+                    wall.availability_badge = 'Not Available'; // Re-using Not Available for partial bookings to keep UI simple per user request
+                }
+            }
+        }
+
+        if (req.query.availability) {
+            const availabilityFilter = req.query.availability.toLowerCase().replace('_', ' ');
+            walls = walls.filter(w => w.availability_badge.toLowerCase() === availabilityFilter);
+        }
+
         res.json(walls);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -19,8 +46,33 @@ exports.getWalls = async (req, res) => {
 // Get single wall
 exports.getWallById = async (req, res) => {
     try {
-        const wall = await Wall.findById(req.params.id).populate('owner', 'name email');
-        if (!wall) return res.status(404).json({ message: 'Wall not found' });
+        const wallDoc = await Wall.findById(req.params.id).populate('owner', 'name email').lean();
+        if (!wallDoc) return res.status(404).json({ message: 'Wall not found' });
+
+        let wall = { ...wallDoc };
+        wall.availability_badge = 'Available';
+        if (wall.status !== 'approved') {
+            wall.availability_badge = 'Under Approval';
+        } else {
+            const currentDate = new Date();
+            const activeBookings = await Booking.find({
+                wall: wall._id,
+                bookingStatus: { $in: ['pending', 'confirmed', 'active'] },
+                endDate: { $gte: currentDate }
+            });
+
+            if (wall.availability === 'booked') {
+                wall.availability_badge = 'Not Available';
+            } else if (activeBookings.length > 0) {
+                wall.activeBookings = activeBookings;
+                const isCurrentlyBooked = activeBookings.some(b => new Date(b.startDate) <= currentDate && new Date(b.endDate) >= currentDate);
+                if (isCurrentlyBooked) {
+                    wall.availability_badge = 'Not Available';
+                } else {
+                    wall.availability_badge = 'Not Available';
+                }
+            }
+        }
         res.json(wall);
     } catch (err) {
         res.status(500).json({ error: err.message });

@@ -51,7 +51,20 @@ exports.createBooking = async (req, res) => {
 
         const wall = await Wall.findById(wallId);
         if (!wall) return res.status(404).json({ message: 'Wall not found' });
-        if (wall.availability === 'booked') return res.status(400).json({ message: 'Wall is already booked' });
+
+        // Overlap Check Validation
+        const overlappingBookings = await Booking.find({
+            wall: wallId,
+            bookingStatus: { $in: ['pending', 'confirmed', 'active'] },
+            $or: [
+                { startDate: { $lte: new Date(endDate) }, endDate: { $gte: new Date(startDate) } }
+            ]
+        });
+
+        if (overlappingBookings.length > 0) {
+            return res.status(400).json({ message: 'Wall is already booked for the selected dates' });
+        }
+
 
         const pricing = calculatePrice(wall, startDate, endDate, units);
 
@@ -74,7 +87,10 @@ exports.createBooking = async (req, res) => {
             owner: wall.owner,
             startDate, endDate, units,
             ...pricing,
-            razorpayOrderId
+            razorpayOrderId,
+            bookingStatus: 'pending',
+            paymentStatus: 'pending',
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes hold
         });
 
         await booking.save();
@@ -115,14 +131,13 @@ exports.verifyPayment = async (req, res) => {
         }
 
         if (isValid) {
-            booking.status = 'pending_approval'; // Payment successful, wait for owner
+            booking.paymentStatus = 'completed';
+            booking.bookingStatus = 'pending'; // Payment successful, wait for owner action
+            booking.expiresAt = undefined; // release temporary hold
             booking.razorpayPaymentId = razorpay_payment_id || 'dummy_payment_id';
             await booking.save();
 
-            // Update wall status
-            await Wall.findByIdAndUpdate(booking.wall, { availability: 'booked' });
-
-            res.json({ message: 'Payment verified successfully', booking });
+            res.json({ message: 'Payment verified successfully. Awaiting owner approval.', booking });
         } else {
             res.status(400).json({ message: 'Invalid payment signature' });
         }
@@ -158,17 +173,29 @@ exports.getOwnerBookings = async (req, res) => {
 // Owner approves/rejects booking
 exports.updateBookingStatus = async (req, res) => {
     try {
-        const { status } = req.body; // 'approved' or 'rejected'
+        const { status } = req.body; // 'confirmed' or 'cancelled' or 'active'
         const booking = await Booking.findById(req.params.id);
 
         if (!booking) return res.status(404).json({ message: 'Booking not found' });
         if (booking.owner.toString() !== req.user.id) return res.status(403).json({ message: 'Unauthorized' });
 
-        booking.status = status;
+        booking.bookingStatus = status;
         await booking.save();
 
-        if (status === 'rejected') {
-            await Wall.findByIdAndUpdate(booking.wall, { availability: 'available' });
+        // Update the Wall's availability based on the decision
+        if (status === 'confirmed' || status === 'active') {
+            await Wall.findByIdAndUpdate(booking.wall, { availability: 'booked' });
+        } else if (status === 'cancelled') {
+            // Only revert if there are no other active bookings for this wall (simplified for now to just available)
+            // A more robust system would check overlapping confirmed dates. For MVP, we'll mark it available.
+            const otherActiveBookings = await Booking.find({
+                wall: booking.wall,
+                bookingStatus: { $in: ['confirmed', 'active'] },
+                _id: { $ne: booking._id }
+            });
+            if (otherActiveBookings.length === 0) {
+                await Wall.findByIdAndUpdate(booking.wall, { availability: 'available' });
+            }
         }
 
         res.json(booking);
@@ -185,6 +212,24 @@ exports.getAllBookingsAdmin = async (req, res) => {
             .populate('advertiser', 'name')
             .populate('owner', 'name');
         res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Advertiser deletes a booking
+exports.deleteBooking = async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.id);
+        if (!booking) return res.status(404).json({ message: 'Booking not found' });
+
+        // Ensure user is the advertiser who created it
+        if (booking.advertiser.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        await Booking.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Booking deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

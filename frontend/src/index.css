@@ -3,18 +3,21 @@
 
 :root {
   /* Colors */
-  --bg-dark: #0f1115;
-  --bg-card: #1c1f26;
-  --bg-concrete: #2a2e35;
-  --text-main: #f0f2f5;
-  --text-muted: #9ba1a6;
+  --bg-dark: #0D0D0D;
+  --bg-card: #1E1E2E;
+  --bg-concrete: #1A1A2E;
+  /* Deep Dark Navy */
+  --text-main: #FFFFFF;
+  --text-muted: #BBBBBB;
 
-  --primary: #2563eb; /* Clean Corporate Blue */
-  --primary-hover: #1d4ed8;
-  --primary-glow: rgba(37, 99, 235, 0.4);
+  --primary: #E85D04;
+  /* Electric Orange */
+  --primary-hover: #D05303;
+  --primary-glow: rgba(232, 93, 4, 0.4);
 
-  --accent: #38bdf8; /* Light Sky Blue */
-  --accent-glow: rgba(56, 189, 248, 0.4);
+  --accent: #FFD60A;
+  /* Neon Yellow */
+  --accent-glow: rgba(255, 214, 10, 0.4);
 
   --success: #10b981;
   --warning: #f59e0b;
@@ -25,7 +28,6 @@
   --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.6);
   --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.8);
   --shadow-neon: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow);
-
 }
 
 * {
@@ -52,6 +54,54 @@ h6 {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
   letter-spacing: -0.5px;
+}
+
+/* Typography Scales */
+h1,
+.page-title {
+  font-size: 4rem;
+  /* 64px */
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+h2,
+.section-title {
+  font-size: 2rem;
+  /* 32px */
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h3,
+.card-title {
+  font-size: 1.125rem;
+  /* 18px */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+p,
+.body-text {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  /* 14px */
+}
+
+.text-tiny {
+  font-size: 0.8125rem;
+  /* 13px */
+}
+
+.price-text {
+  font-size: 1.25rem;
+  /* 20px */
+  font-weight: 800;
+  color: var(--accent);
 }
 
 a {
@@ -87,11 +137,10 @@ img {
   flex: 1;
   padding-top: 80px;
   /* Offset for fixed navbar */
-  max-width: 1400px;
   width: 100%;
+  max-width: 100%;
+  /* Changed from 1400px to allow full bleed edge-to-edge layouts */
   margin: 0 auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
   padding-bottom: 3rem;
 }
 
@@ -179,12 +228,14 @@ img {
   font-weight: 600;
   border: none;
   outline: none;
+  min-height: 44px;
+  /* Touch target minimum */
 }
 
 .btn-primary {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+  box-shadow: 0 4px 15px var(--primary-glow);
 }
 
 .btn-primary:hover {

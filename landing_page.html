@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWMS — Digital Wall Management System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500;600;700&family=Bebas+Neue&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* CSS Variables and resets */
+        :root {
+            --bg-main: #0A0A0F;
+            --bg-light: #111118;
+            --bg-card: #1A1A26;
+            --bg-hover: #22223A;
+            --accent-primary: #E85D04;
+            --accent-secondary: #FFD60A;
+
+            --text-heading: #FFFFFF;
+            --text-body: #BBBBCC;
+            --text-muted: #8888AA;
+
+            --font-body: 'Barlow', sans-serif;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-condensed: 'Barlow Condensed', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image:
+                linear-gradient(rgba(10, 10, 15, 0.92), rgba(10, 10, 15, 0.97)),
+                url('https://images.unsplash.com/photo-1510408479815-5606d1dfcbb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-body);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+        }
+
+        /* Typography Defaults */
+        h1,
+        h2,
+        h3,
+        h4,
+        .bebas {
+            font-family: var(--font-display);
+            color: var(--text-heading);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .barlow-cond {
+            font-family: var(--font-condensed);
+        }
+
+        p {
+            color: var(--text-body);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Utility Classes */
+        .section-tag {
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .section-tag::before {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 2px;
+            background-color: var(--accent-primary);
+        }
+
+        .section-tag-center {
+            justify-content: center;
+        }
+
+        .section-tag-center::before {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseOrb {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes bounceScroll {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(45deg);
+            }
+
+            50% {
+                transform: translateY(10px) rotate(45deg);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            font-family: var(--font-body);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: #fff;
+            padding: 14px 28px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(232, 93, 4, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 14px 28px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-nav {
+            background-color: var(--accent-primary);
+            color: #fff;
+            padding: 9px 22px;
+            font-size: 13px;
+        }
+
+
+        /* ==============================================================
+           SECTION 1: NAVBAR
+           ============================================================== */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(232, 93, 4, 0.15);
+            padding: 18px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: padding 0.3s ease;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-tagline {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        /* ==============================================================
+           SECTION 2: HERO
+           ============================================================== */
+        #hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 60px 40px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 70% 50%, rgba(232, 93, 4, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(255, 214, 10, 0.05) 0%, transparent 40%),
+                linear-gradient(rgba(232, 93, 4, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232, 93, 4, 0.04) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+        }
+
+        #hero::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: 5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(232, 93, 4, 0.4) 0%, transparent 60%);
+            border-radius: 50%;
+            animation: pulseOrb 4s infinite ease-in-out;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        .hero-content {
+            max-width: 780px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+            animation: fadeUp 0.8s forwards;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(64px, 9vw, 120px);
+            line-height: 0.9;
+            margin-bottom: 24px;
+            animation: fadeUp 0.8s 0.2s forwards;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        .hero-title span.orange {
+            color: var(--accent-primary);
+        }
+
+        .hero-title span.outline {
+            color: transparent;
+            -webkit-text-stroke: 1px #fff;
+        }
+
+        .hero-subtitle {
+            font-size: 17px;
+            font-weight: 300;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+            line-height: 1.6;
+            animation: fadeUp 0.8s 0.4s forwards;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        .hero-subtitle b {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            animation: fadeUp 0.8s 0.6s forwards;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: rgba(17, 17, 24, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+            border-radius: 8px;
+            padding: 30px;
+            animation: fadeUp 0.8s 0.8s forwards;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        .stat-item {
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 44px;
+            color: var(--accent-primary);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scroll-text {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-box {
+            width: 12px;
+            height: 12px;
+            border-right: 2px solid var(--accent-primary);
+            border-bottom: 2px solid var(--accent-primary);
+            transform: rotate(45deg);
+            animation: bounceScroll 2s infinite;
+        }
+
+        /* ==============================================================
+           SECTION 3: TRUSTED BY
+           ============================================================== */
+        #trusted {
+            background-color: var(--bg-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 48px 60px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .trusted-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+            flex-shrink: 0;
+        }
+
+        .trusted-brands {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .brand-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 40px;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #ccc;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .brand-pill:hover {
+            border-color: rgba(232, 93, 4, 0.4);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(232, 93, 4, 0.1);
+        }
+
+        /* ==============================================================
+           SECTION 4: HOW IT WORKS
+           ============================================================== */
+        #how-it-works {
+            background: var(--bg-light);
+            padding: 100px 60px;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            padding: 48px 40px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .step-card::before {
+            content: attr(data-step);
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-family: var(--font-display);
+            font-size: 80px;
+            color: rgba(232, 93, 4, 0.08);
+            z-index: -1;
+            transition: color 0.3s;
+        }
+
+        .step-card:hover {
+            background: var(--bg-hover);
+        }
+
+        .step-card:hover::before {
+            color: rgba(232, 93, 4, 0.15);
+        }
+
+        .step-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(232, 93, 4, 0.1);
+            border: 1px solid rgba(232, 93, 4, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.1);
+        }
+
+        .step-title {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* ==============================================================
+           SECTION 5: LIVE INVENTORY
+           ============================================================== */
+        #inventory {
+            padding: 100px 60px;
+            background: var(--bg-main);
+        }
+
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .listing-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(232, 93, 4, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(232, 93, 4, 0.1);
+        }
+
+        .card-img {
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+
+        .card-img.bg-1 {
+            background: linear-gradient(135deg, #1A1A26, #2a1610);
+        }
+
+        .card-img.bg-2 {
+            background: linear-gradient(135deg, #1A1A26, #101a2a);
+        }
+
+        .card-img.bg-3 {
+            background: linear-gradient(135deg, #1A1A26, #1f102a);
+        }
+
+        .card-img.bg-4 {
+            background: linear-gradient(135deg, #1A1A26, #2a2810);
+        }
+
+        .card-img.bg-5 {
+            background: linear-gradient(135deg, #1A1A26, #102a1e);
+        }
+
+        .card-img.bg-6 {
+            background: linear-gradient(135deg, #1A1A26, #2a101a);
+        }
+
+        .badge {
+            position: absolute;
+            top: 16px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .badge-avail {
+            left: 16px;
+            background: #10b981;
+            color: #fff;
+        }
+
+        .badge-soon {
+            left: 16px;
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        .badge-format {
+            right: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            top: auto;
+            bottom: 16px;
+        }
+
+        .save-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .save-btn.saved {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .card-body {
+            padding: 20px 22px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-loc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .card-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 0;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            text-align: left;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding-left: 12px;
+        }
+
+        .meta-item:first-child {
+            padding-left: 0;
+        }
+
+        .meta-item:last-child {
+            border-right: none;
+        }
+
+        .meta-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-lbl {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-val {
+            font-family: var(--font-condensed);
+            font-size: 24px;
+            color: var(--accent-primary);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .price-lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .btn-card {
+            background: var(--accent-primary);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .btn-card:hover {
+            box-shadow: 0 0 10px rgba(232, 93, 4, 0.4);
+        }
+
+        /* ==============================================================
+           SECTION 6: WHY DWMS
+           ============================================================== */
+        #why {
+            background: var(--bg-light);
+            padding: 100px 60px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .feature-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .feature-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .f-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(232, 93, 4, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .f-title {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .f-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .stats-panel {
+            background: radial-gradient(circle at center, rgba(232, 93, 4, 0.15), transparent 70%), #1A1A26;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            height: 460px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .big-stat {
+            font-family: var(--font-display);
+            font-size: 100px;
+            color: var(--accent-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .big-stat-lbl {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 60px;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 40px;
+        }
+
+        .m-stat {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* ==============================================================
+           SECTION 7: FORMATS
+           ============================================================== */
+        #formats {
+            background: var(--bg-main);
+            padding: 100px 60px;
+            text-align: center;
+        }
+
+        .formats-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 60px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .format-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--bg-card);
+            border-radius: 12px;
+            padding: 40px 20px;
+            transition: all 0.3s;
+        }
+
+        .format-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(232, 93, 4, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .form-icon {
+            font-size: 40px;
+            margin-bottom: 24px;
+        }
+
+        .form-title {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .form-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            min-height: 60px;
+        }
+
+        .form-count {
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-size: 13px;
+        }
+
+        /* ==============================================================
+           SECTION 8: TESTIMONIALS
+           ============================================================== */
+        #testimonials {
+            background: var(--bg-light);
+            padding: 100px 60px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .test-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .test-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232, 93, 4, 0.2);
+        }
+
+        .stars {
+            color: var(--accent-secondary);
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .test-quote {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            min-height: 80px;
+        }
+
+        .author-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .a-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .a-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ==============================================================
+           SECTION 9: FINAL CTA
+           ============================================================== */
+        #cta {
+            background: var(--bg-main);
+            padding: 140px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        #cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(232, 93, 4, 0.2) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 80px;
+            margin-bottom: 24px;
+        }
+
+        .cta-title span {
+            color: var(--accent-primary);
+        }
+
+        .cta-acts {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        /* ==============================================================
+           SECTION 10: FOOTER
+           ============================================================== */
+        footer {
+            background: var(--bg-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 60px;
+        }
+
+        .foot-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .foot-logo {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--accent-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .foot-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+            max-width: 300px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 12px;
+        }
+
+        .soc-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .soc-btn:hover {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        .foot-col h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .foot-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .foot-col li a {
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .foot-col li a:hover {
+            color: var(--accent-primary);
+        }
+
+        .foot-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SECTION 1: FIXED NAVIGATION BAR -->
+    <nav id="navbar">
+        <div class="nav-left">
+            <a href="#" class="nav-logo">🏙 DWMS</a>
+            <div class="nav-divider"></div>
+            <span class="nav-tagline">Digital Wall Management</span>
+        </div>
+        <div class="nav-links">
+            <a href="#inventory" class="nav-link">Browse Spaces</a>
+            <a href="#formats" class="nav-link">Ad Formats</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <button class="btn btn-nav">List Your Space</button>
+        </div>
+    </nav>
+
+    <!-- SECTION 2: HERO -->
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-pill">
+                <div class="dot"></div>
+                India's #1 Outdoor Ad Marketplace
+            </div>
+            <h1 class="hero-title">
+                DOMINATE<br>
+                THE <span class="orange">URBAN</span><br>
+                <span class="outline">CANVAS</span>
+            </h1>
+            <div class="hero-actions">
+                <button class="btn btn-primary">Browse Spaces &rarr;</button>
+                <button class="btn btn-secondary">How It Works</button>
+            </div>
+        </div>
+
+        <div class="scroll-hint reveal reveal-delay-3">
+            <span class="scroll-text">Scroll</span>
+            <div class="scroll-box"></div>
+        </div>
+    </section>
+
+    <!-- HIGHLIGHTED SUBTITLE ROW -->
+    <section class="reveal"
+        style="background: var(--accent-primary); padding: 24px 60px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <p
+            style="font-size: 20px; font-weight: 500; font-family: var(--font-body); color: #fff; margin: 0; letter-spacing: 0.5px;">
+            India's premium outdoor ad marketplace. Book billboards, LED walls & transit ads from <b
+                style="font-weight: 800; text-decoration: underline;">₹10,000/month</b>.
+        </p>
+    </section>
+
+    <div class="scroll-hint reveal reveal-delay-3">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-box"></div>
+    </div>
+    </div>
+    </section>
+
+    <!-- DEDICATED STATS ROW -->
+    <section class="stats-strip reveal reveal-delay-1"
+        style="margin-top: 0; border-radius: 0; background: #0a0a0f; padding: 60px 20px; border-left: none; border-right: none;">
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; text-align: center;">
+            <div class="stat-item" style="border-right: none; flex: 1; min-width: 150px;">
+                <div class="stat-num" style="font-size: 64px;">500+</div>
+                <div class="stat-label" style="letter-spacing: 0.1em;">Spaces</div>
+            </div>
+            <div class="stat-item" style="border-right: none; flex: 1; min-width: 150px;">
+                <div class="stat-num" style="font-size: 64px;">12</div>
+                <div class="stat-label" style="letter-spacing: 0.1em;">Cities</div>
+            </div>
+            <div class="stat-item" style="border-right: none; flex: 1; min-width: 150px;">
+                <div class="stat-num" style="font-size: 64px;">2CR+</div>
+                <div class="stat-label" style="letter-spacing: 0.1em;">Monthly Views</div>
+            </div>
+            <div class="stat-item" style="border-right: none; flex: 1; min-width: 150px;">
+                <div class="stat-num" style="font-size: 64px;">200+</div>
+                <div class="stat-label" style="letter-spacing: 0.1em;">Brands</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: HOW IT WORKS -->
+    <section id="how-it-works">
+        <div class="section-header reveal">
+            <div class="section-tag">Simple Process</div>
+            <h2 class="section-title">HOW IT WORKS</h2>
+            <p class="section-subtitle">Launch your outdoor campaign in three simple steps &mdash; no agents, no hidden
+                fees.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card reveal reveal-delay-1" data-step="1">
+                <div class="step-icon">🔍</div>
+                <h3 class="step-title barlow-cond">Browse Spaces</h3>
+                <p class="step-desc">Filter by city, ad format, price range, and traffic volume. View high-res photos,
+                    exact dimensions, and live daily impression estimates for every location.</p>
+            </div>
+            <div class="step-card reveal reveal-delay-2" data-step="2">
+                <div class="step-icon">📅</div>
+                <h3 class="step-title barlow-cond">Book Online</h3>
+                <p class="step-desc">Select your campaign dates, confirm pricing, and place a booking request directly
+                    with the space owner &mdash; all within the platform. No calls needed.</p>
+            </div>
+            <div class="step-card reveal reveal-delay-3" data-step="3">
+                <div class="step-icon">🚀</div>
+                <h3 class="step-title barlow-cond">Your Ad Goes Live</h3>
+                <p class="step-desc">Track campaign performance, estimated impressions, and ROI from your personalized
+                    advertiser dashboard. Get notified when your ad is live.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: AVAILABLE SPACES -->
+    <section id="inventory">
+        <div class="inventory-header reveal">
+            <div>
+                <div class="section-tag">Live Inventory</div>
+                <h2 class="section-title">AVAILABLE SPACES</h2>
+            </div>
+            <button class="btn btn-secondary">View All 500+ Spaces &rarr;</button>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Card 1 -->
+            <div class="listing-card reveal reveal-delay-1">
+                <div class="card-img bg-1">
+                    🏙️
+                    <span class="badge badge-avail">✓ Available</span>
+                    <span class="badge badge-format">LED Wall</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">Patna Airport Road Panel</h3>
+                    <div class="card-loc">📍 Bailey Road, Patna, Bihar</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">75,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">30&times;15 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">High</span><span class="meta-lbl">Traffic</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹55,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="listing-card reveal reveal-delay-2">
+                <div class="card-img bg-2">
+                    🌆
+                    <span class="badge badge-avail">✓ Available</span>
+                    <span class="badge badge-format">Billboard</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">Park Street Corner Billboard</h3>
+                    <div class="card-loc">📍 Park Street, Kolkata, WB</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">90,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">26&times;13 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">Very High</span><span
+                                class="meta-lbl">Traffic</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹70,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="listing-card reveal reveal-delay-3">
+                <div class="card-img bg-3">
+                    🌃
+                    <span class="badge badge-soon">Available Apr 15</span>
+                    <span class="badge badge-format">LED Wall</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">SG Highway LED Panel</h3>
+                    <div class="card-loc">📍 SG Highway, Ahmedabad, GJ</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">80,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">30&times;10 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">High</span><span class="meta-lbl">Traffic</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹60,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="listing-card reveal reveal-delay-1">
+                <div class="card-img bg-4">
+                    🏛️
+                    <span class="badge badge-avail">✓ Available</span>
+                    <span class="badge badge-format">Painted Wall</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">T Nagar Market Wall</h3>
+                    <div class="card-loc">📍 T Nagar, Chennai, TN</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">45,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">18&times;9 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">Medium</span><span class="meta-lbl">Traffic</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹32,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="listing-card reveal reveal-delay-2">
+                <div class="card-img bg-5">
+                    🌉
+                    <span class="badge badge-avail">✓ Available</span>
+                    <span class="badge badge-format">Billboard</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">FC Road Commercial Billboard</h3>
+                    <div class="card-loc">📍 FC Road, Pune, MH</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">65,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">22&times;11 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">High</span><span class="meta-lbl">Traffic</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹44,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="listing-card reveal reveal-delay-3">
+                <div class="card-img bg-6">
+                    🏢
+                    <span class="badge badge-avail">✓ Available</span>
+                    <span class="badge badge-format">Highway Panel</span>
+                    <div class="save-btn">♡</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title barlow-cond">Alambagh Highway Panel</h3>
+                    <div class="card-loc">📍 Alambagh, Lucknow, UP</div>
+                    <div class="card-meta">
+                        <div class="meta-item"><span class="meta-val">52,000</span><span class="meta-lbl">Daily
+                                Views</span></div>
+                        <div class="meta-item"><span class="meta-val">24&times;12 ft</span><span
+                                class="meta-lbl">Dimensions</span></div>
+                        <div class="meta-item"><span class="meta-val">Medium</span><span class="meta-lbl">Traffic</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <div class="price-val">₹36,000</div>
+                            <div class="price-lbl">per month</div>
+                        </div>
+                        <button class="btn-card">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 6: WHY DWMS -->
+    <section id="why">
+        <div class="why-grid">
+            <div class="why-content reveal">
+                <div class="section-tag">Why Choose Us</div>
+                <h2 class="section-title">THE SMARTER WAY TO <span style="color:var(--accent-primary);">ADVERTISE</span>
+                </h2>
+
+                <div class="feature-stack">
+                    <div class="feature-item">
+                        <div class="f-icon">⚡</div>
+                        <div>
+                            <div class="f-title">Real-Time Availability</div>
+                            <div class="f-desc">No more calling agents to check if a billboard is booked. See exact
+                                dates instantly.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="f-icon">💰</div>
+                        <div>
+                            <div class="f-title">Transparent Pricing</div>
+                            <div class="f-desc">What you see is what you pay. Stop dealing with markups, hidden fees,
+                                and middlemen.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="f-icon">📊</div>
+                        <div>
+                            <div class="f-title">Campaign Analytics</div>
+                            <div class="f-desc">Track traffic estimates, visibility scores, and engagement stats from
+                                your dashboard.</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="f-icon">🛡️</div>
+                        <div>
+                            <div class="f-title">Verified Spaces Only</div>
+                            <div class="f-desc">Every ad space is physically verified by our team before being listed on
+                                the platform.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-panel reveal reveal-delay-2">
+                <div class="big-stat">2CR+</div>
+                <div class="big-stat-lbl">Monthly Impressions Delivered</div>
+
+                <div class="mini-stats">
+                    <div class="m-stat">98% Satisfaction Rate</div>
+                    <div class="m-stat">4.8★ Avg Space Rating</div>
+                    <div class="m-stat">24hr Booking Confirmation</div>
+                    <div class="m-stat">₹0 Hidden Fees</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: AD FORMATS -->
+    <section id="formats">
+        <div class="reveal">
+            <div class="section-tag section-tag-center">What Can You Book?</div>
+            <h2 class="section-title">AD FORMATS</h2>
+            <p class="formats-subtitle">From massive highway hoardings to painted market walls &mdash; find the right
+                format for your campaign.</p>
+        </div>
+
+        <div class="format-grid">
+            <div class="format-card reveal reveal-delay-1">
+                <div class="form-icon">🪟</div>
+                <h3 class="form-title barlow-cond">Billboard / Hoarding</h3>
+                <p class="form-desc">Large static displays on highways, flyovers, and busy junctions.</p>
+                <div class="form-count">180+ spaces</div>
+            </div>
+            <div class="format-card reveal reveal-delay-1">
+                <div class="form-icon">💡</div>
+                <h3 class="form-title barlow-cond">LED Wall</h3>
+                <p class="form-desc">Digital screens that play your video or animated ad. High impact at night.</p>
+                <div class="form-count">120+ spaces</div>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="form-icon">🎨</div>
+                <h3 class="form-title barlow-cond">Painted Wall</h3>
+                <p class="form-desc">Hand-painted or vinyl murals on market walls and building facades.</p>
+                <div class="form-count">95+ spaces</div>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="form-icon">🚌</div>
+                <h3 class="form-title barlow-cond">Transit Panel</h3>
+                <p class="form-desc">Ads on bus shelters, metro pillars, and transit corridors.</p>
+                <div class="form-count">105+ spaces</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: TESTIMONIALS -->
+    <section id="testimonials">
+        <div class="reveal">
+            <div class="section-tag">What People Say</div>
+            <h2 class="section-title">BRANDS LOVE DWMS</h2>
+        </div>
+
+        <div class="test-grid">
+            <div class="test-card reveal reveal-delay-1">
+                <div class="stars">★★★★★</div>
+                <p class="test-quote">"We booked 8 LED panels across 3 cities in under an hour. No agents, no
+                    back-and-forth. The campaign went live exactly on schedule."</p>
+                <div class="author-row">
+                    <div class="avatar" style="background:#E85D04;">R</div>
+                    <div>
+                        <div class="a-name">Rahul Mehta</div>
+                        <div class="a-role">Marketing Head, TechCorp India</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-card reveal reveal-delay-2">
+                <div class="stars">★★★★★</div>
+                <p class="test-quote">"The pricing is completely transparent. What we saw on the listing is exactly what
+                    we paid. After years of dealing with agents this felt like magic."</p>
+                <div class="author-row">
+                    <div class="avatar" style="background:#10b981;">P</div>
+                    <div>
+                        <div class="a-name">Priya Sharma</div>
+                        <div class="a-role">Brand Manager, UrbanStyle</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-card reveal reveal-delay-3">
+                <div class="stars">★★★★☆</div>
+                <p class="test-quote">"As a wall owner, DWMS helped me fill 11 months out of 12 last year. I've never
+                    had this kind of consistent income from my properties before."</p>
+                <div class="author-row">
+                    <div class="avatar" style="background:#3b82f6;">A</div>
+                    <div>
+                        <div class="a-name">Arun Patel</div>
+                        <div class="a-role">Space Owner, Ahmedabad</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 9: FINAL CTA -->
+    <section id="cta">
+        <div class="cta-content reveal">
+            <div class="section-tag section-tag-center">Get Started Today</div>
+            <h2 class="cta-title bebas">READY TO OWN THE <span style="color:var(--accent-primary);">STREETS?</span></h2>
+            <p style="color: var(--text-muted);">Join India's fastest growing outdoor ad network.</p>
+            <div class="cta-acts">
+                <button class="btn btn-primary">Browse Spaces &rarr;</button>
+                <button class="btn btn-secondary">List Your Space</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 10: FOOTER -->
+    <footer>
+        <div class="foot-grid reveal">
+            <div>
+                <div class="foot-logo">🏙 DWMS</div>
+                <p class="foot-desc">India's premium outdoor advertising marketplace where you can book billboards, LED
+                    walls, painted walls, and transit ad panels instantly.</p>
+                <div class="socials">
+                    <div class="soc-btn">𝕏</div>
+                    <div class="soc-btn">in</div>
+                    <div class="soc-btn">f</div>
+                    <div class="soc-btn">▶</div>
+                </div>
+                <!-- SECTION 10: FOOTER -->
+                <footer>
+                    <div class="footer-top">
+                        <div class="foot-col">
+                            <div class="nav-logo" style="margin-bottom: 20px;">🏙 DWMS</div>
+                            <p style="font-size: 14px;">India's premium marketplace for outdoor advertising. Connecting
+                                brands with
+                                the best urban spaces.</p>
+                        </div>
+                        <div class="foot-col">
+                            <h4 style="margin-bottom: 20px; font-size: 16px; color: #fff;">Made by team SARR</h4>
+                        </div>
+                    </div>
+                    <div class="foot-bottom reveal">
+                        <div>&copy; 2026 DWMS &mdash; Digital Wall Management System. All rights reserved.</div>
+                        <div>Made with ❤️ for Indian Advertisers</div>
+                    </div>
+                </footer>
+
+                <!-- JAVASCRIPT -->
+                <script>
+                    // Navbar Shrink
+                    const navbar = document.getElementById('navbar');
+                    window.addEventListener('scroll', () => {
+                        if (window.scrollY > 60) {
+                            navbar.style.padding = '12px 60px';
+                        } else {
+                            navbar.style.padding = '18px 60px';
+                        }
+                    });
+
+                    // Intersection Observer for Scroll Reveals
+                    const observerOptions = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.12
+                    };
+
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('active');
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, observerOptions);
+
+                    document.querySelectorAll('.reveal').forEach(el => {
+                        observer.observe(el);
+                    });
+
+                    // Save Button Toggle
+                    document.querySelectorAll('.save-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevent clicking card
+                            btn.classList.toggle('saved');
+                            if (btn.classList.contains('saved')) {
+                                btn.innerHTML = '♥';
+                            } else {
+                                btn.innerHTML = '♡';
+                            }
+                        });
+                    });
+                </script>
+</body>
+
+</html>

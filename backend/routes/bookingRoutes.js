@@ -7,6 +7,7 @@ const { authMiddleware, roleMiddleware } = require('../middleware/auth');
 router.post('/create', authMiddleware, roleMiddleware(['advertiser']), bookingController.createBooking);
 router.post('/verify-payment', authMiddleware, roleMiddleware(['advertiser']), bookingController.verifyPayment);
 router.get('/advertiser/me', authMiddleware, roleMiddleware(['advertiser']), bookingController.getAdvertiserBookings);
+router.delete('/:id', authMiddleware, roleMiddleware(['advertiser']), bookingController.deleteBooking);
 
 // Owner routes
 router.get('/owner/me', authMiddleware, roleMiddleware(['owner']), bookingController.getOwnerBookings);
