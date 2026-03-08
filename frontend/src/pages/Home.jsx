@@ -174,7 +174,7 @@ const Home = () => {
 
                         <div style={{ position: 'absolute', top: '5%', right: '5%', width: '70%', height: '60%', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', zIndex: 3, transform: 'rotateX(5deg) rotateY(-10deg) rotateZ(2deg) translateY(0)', transition: 'transform 0.3s' }}>
                             <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', color: '#fff', zIndex: 4 }}>PREMIUM LED</div>
-                            <img src={walls[0]?.images?.[0] || 'https://images.unsplash.com/photo-1542204646-7c05b8ed34b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} alt="Billboard 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={walls[0]?.images?.[0] || '/assets/hero_led_billboard.png'} alt="Billboard 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
 
                         {/* Secondary Floating Image */}
@@ -417,8 +417,8 @@ const Home = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
                     {[
                         { title: 'LED Video Walls', image: 'https://images.unsplash.com/photo-1627051992011-8575003c3162?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Dynamic, high-brightness digital displays' },
-                        { title: 'Static Painted Walls', image: 'https://images.unsplash.com/photo-1574887428135-c3359d9c8ba2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Traditional, long-lasting brand murals' },
-                        { title: 'Flex Banners', image: 'https://images.unsplash.com/photo-1555513813-f4c718ea656f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Cost-effective, large format print ads' },
+                        { title: 'Static Painted Walls', image: '/assets/ad_format_painted.png', description: 'Traditional, long-lasting brand murals' },
+                        { title: 'Flex Banners', image: '/assets/ad_format_flex.png', description: 'Cost-effective, large format print ads' },
                         { title: 'Transit Displays', image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Bus shelters and metro station branding' }
                     ].map((cat, idx) => (
                         <div key={idx} className="group" style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', height: '300px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -446,10 +446,10 @@ const Home = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
                         {[
-                            { city: 'Mumbai', image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80', properties: '120+ Spaces' },
-                            { city: 'Delhi NCR', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80', properties: '150+ Spaces' },
-                            { city: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80', properties: '90+ Spaces' },
-                            { city: 'Hyderabad', image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80', properties: '85+ Spaces' }
+                            { city: 'Mumbai', image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '120+ Spaces' },
+                            { city: 'Delhi NCR', image: 'https://images.unsplash.com/photo-1588693892816-24d193f45ac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '150+ Spaces' },
+                            { city: 'Bangalore', image: 'https://images.unsplash.com/photo-1542204646-7c05b8ed34b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '90+ Spaces' },
+                            { city: 'Hyderabad', image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '85+ Spaces' }
                         ].map((loc, idx) => (
                             <div key={idx} className="group" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '200px', cursor: 'pointer' }}>
                                 <img src={loc.image} alt={loc.city} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-110" />
@@ -470,15 +470,8 @@ const Home = () => {
                     <h2 className="section-title" style={{ fontSize: '2.5rem', margin: '0 0 16px 0' }}>The Power of Outdoor</h2>
                     <p style={{ color: '#BBBBBB', fontSize: '1.1rem' }}>Transforming empty spaces into high-impact revenue generators</p>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '0', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', backgroundColor: '#1A1A2E' }}>
-                    <div style={{ position: 'relative', minHeight: '400px' }}>
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Empty Wall" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(60%)', position: 'absolute', inset: 0 }} />
-                        <div style={{ position: 'absolute', top: '24px', left: '24px', background: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 16px', borderRadius: '20px', fontWeight: 'bold', fontSize: '0.9rem', zIndex: 10 }}>BEFORE: Empty Wall Space</div>
-                    </div>
-                    <div style={{ position: 'relative', minHeight: '400px', borderLeft: '4px solid var(--primary)' }}>
-                        <img src="https://images.unsplash.com/photo-1579290074693-4a15a81ca04d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Advertisement" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
-                        <div style={{ position: 'absolute', top: '24px', right: '24px', background: 'var(--primary)', color: '#fff', padding: '8px 16px', borderRadius: '20px', fontWeight: 'bold', fontSize: '0.9rem', zIndex: 10, boxShadow: '0 0 20px rgba(232,93,4,0.4)' }}>AFTER: Premium LED Campaign</div>
-                    </div>
+                <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', backgroundColor: '#1A1A2E', display: 'flex', justifyContent: 'center' }}>
+                    <img src="/assets/before_after_combined.jpg" alt="Before and After Comparison" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                 </div>
             </section>
 
