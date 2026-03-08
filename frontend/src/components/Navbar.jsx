@@ -33,9 +33,11 @@ const Navbar = () => {
                         <a href="#how-it-works" className="text-muted hover:text-white" style={{ transition: 'color 0.3s', fontWeight: 500 }}>How It Works</a>
                     )}
 
-                    <Link to={user ? `/dashboard/${user.role}` : '/register'} className="text-muted hover:text-white" style={{ transition: 'color 0.3s', fontWeight: 500 }}>
-                        List Your Space
-                    </Link>
+                    {(!user || user.role !== 'advertiser') && (
+                        <Link to={user ? `/dashboard/${user.role}` : '/register'} className="text-muted hover:text-white" style={{ transition: 'color 0.3s', fontWeight: 500 }}>
+                            List Your Space
+                        </Link>
+                    )}
 
                     {user ? (
                         <>

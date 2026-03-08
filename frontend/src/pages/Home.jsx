@@ -174,13 +174,13 @@ const Home = () => {
 
                         <div style={{ position: 'absolute', top: '5%', right: '5%', width: '70%', height: '60%', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', zIndex: 3, transform: 'rotateX(5deg) rotateY(-10deg) rotateZ(2deg) translateY(0)', transition: 'transform 0.3s' }}>
                             <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', color: '#fff', zIndex: 4 }}>PREMIUM LED</div>
-                            <img src={walls[0]?.images?.[0] || '/assets/hero_led_billboard.png'} alt="Billboard 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src="/assets/hero_led_billboard.png" alt="Billboard 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
 
                         {/* Secondary Floating Image */}
                         <div style={{ position: 'absolute', bottom: '5%', left: '0', width: '60%', height: '50%', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', zIndex: 2, transform: 'rotateX(5deg) rotateY(10deg) rotateZ(-3deg)', transition: 'transform 0.3s' }}>
                             <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'var(--primary)', padding: '4px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', color: '#fff', zIndex: 4 }}>HIGH TRAFFIC</div>
-                            <img src={walls[1]?.images?.[0] || 'https://images.unsplash.com/photo-1506526615594-5211909a33bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} alt="Billboard 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src="/assets/ad_format_flex.png" alt="Billboard 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                     </div>
                 </div>
@@ -480,11 +480,17 @@ const Home = () => {
                 <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
                     <p style={{ color: '#888', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold', marginBottom: '32px' }}>Trusted by top brands</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '40px', opacity: 0.6 }}>
-                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'serif', fontStyle: 'italic', fontWeight: 'bold' }}>SAMSUNG</h2>
-                        <h2 style={{ margin: 0, fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-1px' }}>NIKE</h2>
-                        <h2 style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold' }}>amazon</h2>
-                        <h2 style={{ margin: 0, fontSize: '2.5rem', fontWeight: '900', color: '#E50914', letterSpacing: '-2px' }}>NETFLIX</h2>
-                        <h2 style={{ margin: 0, fontSize: '2.2rem', fontFamily: 'sans-serif', fontWeight: 'bold' }}>Spotify</h2>
+                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'serif', fontStyle: 'italic', fontWeight: 'bold' }}>SamSong</h2>
+                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'sans-serif', fontWeight: '900', letterSpacing: '-1px' }}>Naike</h2>
+                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'sans-serif', fontWeight: 'bold' }}>Amaezon <span style={{ color: '#FF9900' }}>→</span></h2>
+                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'sans-serif', fontWeight: '900', color: '#E50914', textTransform: 'uppercase', letterSpacing: '1px' }}>Netflux</h2>
+                        <h2 style={{ margin: 0, fontSize: '2rem', fontFamily: 'sans-serif', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#1DB954', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2px' }}>
+                                <div style={{ width: '12px', height: '2px', background: '#000', borderRadius: '2px' }}></div>
+                                <div style={{ width: '8px', height: '2px', background: '#000', borderRadius: '2px' }}></div>
+                            </div>
+                            Spottyfie
+                        </h2>
                     </div>
                 </div>
             </section>
