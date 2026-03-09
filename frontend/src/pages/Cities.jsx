@@ -3,12 +3,12 @@ import axios from 'axios';
 import WallCard from '../components/WallCard';
 
 const topCities = [
-    { name: 'Mumbai', image: 'https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-    { name: 'Delhi NCR', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-    { name: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-    { name: 'Hyderabad', image: 'https://images.unsplash.com/photo-1580145892582-720443916698?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-    { name: 'Chennai', image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f7415e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-    { name: 'Pune', image: 'https://images.unsplash.com/photo-1558455610-8647ac2b6c16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
+    { name: 'Mumbai', image: '/assets/city_mumbai.png' },
+    { name: 'Delhi NCR', image: '/assets/city_delhi.png' },
+    { name: 'Bangalore', image: '/assets/city_bangalore.png' },
+    { name: 'Hyderabad', image: '/assets/city_hyderabad.png' },
+    { name: 'Chennai', image: '/assets/city_chennai.png' },
+    { name: 'Pune', image: '/assets/city_pune.png' }
 ];
 
 const Cities = () => {

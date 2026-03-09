@@ -416,10 +416,10 @@ const Home = () => {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
                     {[
-                        { title: 'LED Video Walls', image: '/assets/ad_format_led.png', description: 'Dynamic, high-brightness digital displays' },
-                        { title: 'Static Painted Walls', image: '/assets/ad_format_painted.png', description: 'Traditional, long-lasting brand murals' },
-                        { title: 'Flex Banners', image: '/assets/ad_format_flex.png', description: 'Cost-effective, large format print ads' },
-                        { title: 'Transit Displays', image: '/assets/ad_format_transit.png', description: 'Bus shelters and metro station branding' }
+                        { title: 'LED Video Walls', image: '/assets/format_led_video.png', description: 'Dynamic, high-brightness digital displays' },
+                        { title: 'Static Painted Walls', image: '/assets/format_static_wall.png', description: 'Traditional, long-lasting brand murals' },
+                        { title: 'Flex Banners', image: '/assets/format_flex_banner.png', description: 'Cost-effective, large format print ads' },
+                        { title: 'Transit Displays', image: '/assets/format_transit_display.png', description: 'Bus shelters and metro station branding' }
                     ].map((cat, idx) => (
                         <div key={idx} className="group" style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', height: '300px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.05)' }}>
                             <img src={cat.image} alt={cat.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-110" />
@@ -446,10 +446,10 @@ const Home = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
                         {[
-                            { city: 'Mumbai', image: '/assets/city_mumbai_1772991993784.png', properties: '120+ Spaces' },
-                            { city: 'Delhi NCR', image: '/assets/city_delhi_1772992025860.png', properties: '150+ Spaces' },
-                            { city: 'Bangalore', image: '/assets/city_bangalore_1772992066653.png', properties: '90+ Spaces' },
-                            { city: 'Hyderabad', image: '/assets/city_hyderabad_1772992108814.png', properties: '85+ Spaces' }
+                            { city: 'Mumbai', image: '/assets/city_mumbai.png', properties: '120+ Spaces' },
+                            { city: 'Delhi NCR', image: '/assets/city_delhi.png', properties: '150+ Spaces' },
+                            { city: 'Bangalore', image: '/assets/city_bangalore.png', properties: '90+ Spaces' },
+                            { city: 'Hyderabad', image: '/assets/city_hyderabad.png', properties: '85+ Spaces' }
                         ].map((loc, idx) => (
                             <div key={idx} className="group" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '200px', cursor: 'pointer' }}>
                                 <img src={loc.image} alt={loc.city} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-110" />
