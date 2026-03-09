@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useAuth from '../utils/useAuth';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import './OwnerDashboard.css';
 
 const OwnerDashboard = () => {
     const { user, token } = useAuth();
@@ -132,13 +133,14 @@ const OwnerDashboard = () => {
     const tooltipStyle = { backgroundColor: 'var(--bg-card)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'var(--text-main)' };
 
     return (
-        <div className="animate-fade-in pb-12 overflow-hidden">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div className="animate-fade-in" style={{ paddingBottom: '3rem', overflow: 'hidden' }}>
+            <div className="dashboard-header mb-4">
                 <div>
-                    <h1 className="text-3xl font-bold mb-1 text-accent">Owner Dashboard</h1>
-                    <p className="text-muted tracking-wide">Manage inventory, approve bookings, and track earnings.</p>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '0 0 0.5rem 0', color: 'var(--accent)' }}>Owner Dashboard</h1>
+                    <p className="text-muted" style={{ letterSpacing: '0.025em' }}>Manage inventory, approve bookings, and track earnings.</p>
                 </div>
-                <button className={`btn ${showForm ? 'btn-outline border-danger text-danger hover:bg-danger hover:text-white' : 'btn-primary'}`}
+                <button className={`btn ${showForm ? 'btn-outline' : 'btn-primary'}`}
+                    style={showForm ? { borderColor: 'var(--danger)', color: 'var(--danger)' } : {}}
                     onClick={() => {
                         if (showForm) { setShowForm(false); setEditingWall(null); }
                         else { setFormData(initialFormState); setShowForm(true); }
@@ -150,16 +152,16 @@ const OwnerDashboard = () => {
 
             {/* Form Section */}
             {showForm && (
-                <div className="card-concrete p-8 mb-8 border-t-4" style={{ borderTopColor: 'var(--accent)' }}>
-                    <h2 className="text-2xl font-bold mb-6 text-white">{editingWall ? 'Edit Space Specifications' : 'List a New Space'}</h2>
-                    <form onSubmit={handleSaveWall} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="form-group mb-0">
-                            <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Descriptive Title</label>
-                            <input type="text" name="title" className="form-control bg-dark border-gray-700" value={formData.title} onChange={handleInputChange} required placeholder="e.g. Bandra LED Screen" />
+                <div className="card-concrete listing-form" style={{ padding: '2rem', marginBottom: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem', color: 'white' }}>{editingWall ? 'Edit Space Specifications' : 'List a New Space'}</h2>
+                    <form onSubmit={handleSaveWall} className="form-grid">
+                        <div className="form-group mb-1">
+                            <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Descriptive Title</label>
+                            <input type="text" name="title" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.title} onChange={handleInputChange} required placeholder="e.g. Bandra LED Screen" />
                         </div>
-                        <div className="form-group mb-0">
-                            <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Display Format</label>
-                            <select name="type" className="form-control bg-dark border-gray-700" value={formData.type} onChange={handleInputChange}>
+                        <div className="form-group mb-1">
+                            <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Display Format</label>
+                            <select name="type" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.type} onChange={handleInputChange}>
                                 <option value="Static Painted Wall">Static Painted Wall</option>
                                 <option value="Flex Banner Wall">Flex Banner Wall</option>
                                 <option value="LED Video Wall">LED Video Wall</option>
@@ -168,82 +170,89 @@ const OwnerDashboard = () => {
                                 <option value="Glow Sign Board">Glow Sign Board</option>
                             </select>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:col-span-2">
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Location Type</label>
-                                <select name="locationType" className="form-control bg-dark border-gray-700" value={formData.locationType} onChange={handleInputChange}>
+
+                        <div className="form-row form-full-width">
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Location Type</label>
+                                <select name="locationType" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.locationType} onChange={handleInputChange}>
                                     <option value="Commercial Area">Commercial Area</option>
                                     <option value="Residential Area">Residential Area</option>
                                     <option value="Highway">Highway</option>
                                     <option value="Market Area">Market Area</option>
                                 </select>
                             </div>
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Traffic Level</label>
-                                <select name="trafficLevel" className="form-control bg-dark border-gray-700" value={formData.trafficLevel} onChange={handleInputChange}>
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Traffic Level</label>
+                                <select name="trafficLevel" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.trafficLevel} onChange={handleInputChange}>
                                     <option value="High Traffic">High Traffic</option>
                                     <option value="Medium Traffic">Medium Traffic</option>
                                     <option value="Low Traffic">Low Traffic</option>
                                 </select>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">City</label>
-                                <input type="text" name="city" className="form-control bg-dark border-gray-700" value={formData.city} onChange={handleInputChange} required />
+
+                        <div className="form-row">
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>City</label>
+                                <input type="text" name="city" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.city} onChange={handleInputChange} required />
                             </div>
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Landmark / Locality</label>
-                                <input type="text" name="location" className="form-control bg-dark border-gray-700" value={formData.location} onChange={handleInputChange} required />
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Width (ft)</label>
-                                <input type="number" name="width" className="form-control bg-dark border-gray-700" value={formData.width} onChange={handleInputChange} required />
-                            </div>
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Height (ft)</label>
-                                <input type="number" name="height" className="form-control bg-dark border-gray-700" value={formData.height} onChange={handleInputChange} required />
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Landmark / Locality</label>
+                                <input type="text" name="location" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.location} onChange={handleInputChange} required />
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Pricing Model</label>
-                                <select name="pricingType" className="form-control bg-dark border-gray-700" value={formData.pricingType} onChange={handleInputChange}>
+
+                        <div className="form-row">
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Width (ft)</label>
+                                <input type="number" name="width" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.width} onChange={handleInputChange} required />
+                            </div>
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Height (ft)</label>
+                                <input type="number" name="height" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.height} onChange={handleInputChange} required />
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Pricing Model</label>
+                                <select name="pricingType" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.pricingType} onChange={handleInputChange}>
                                     <option value="monthly">Monthly</option>
                                     <option value="per day">Per Day</option>
                                 </select>
                             </div>
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Base Price (₹)</label>
-                                <input type="number" name="basePrice" className="form-control bg-dark border-gray-700" value={formData.basePrice} onChange={handleInputChange} required />
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Base Price (₹)</label>
+                                <input type="number" name="basePrice" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.basePrice} onChange={handleInputChange} required />
                             </div>
                         </div>
-                        <div className="form-group mb-0 md:col-span-2">
-                            <label className="form-label text-sm text-gray-400 font-bold tracking-wide">Daily Traffic Estimate</label>
-                            <input type="number" name="trafficEstimate" className="form-control bg-dark border-gray-700" value={formData.trafficEstimate} onChange={handleInputChange} required />
+
+                        <div className="form-group mb-1 form-full-width">
+                            <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>Daily Traffic Estimate</label>
+                            <input type="number" name="trafficEstimate" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.trafficEstimate} onChange={handleInputChange} required />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:col-span-2">
-                            <div className="form-group mb-0">
-                                <label className="form-label text-sm text-gray-400 font-bold tracking-wide">High-Res Image URL</label>
-                                <input type="url" name="images" className="form-control bg-dark border-gray-700" value={formData.images} onChange={handleInputChange} placeholder="https://example.com/image.jpg" />
+
+                        <div className="form-row form-full-width" style={{ gap: '1.5rem' }}>
+                            <div className="form-group mb-1">
+                                <label className="form-label" style={{ fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>High-Res Image URL</label>
+                                <input type="url" name="images" className="form-control" style={{ backgroundColor: 'var(--bg-dark)' }} value={formData.images} onChange={handleInputChange} placeholder="https://example.com/image.jpg" />
                             </div>
-                            <div className="form-group mb-0">
-                                <div className="mt-2 p-2 bg-black rounded border border-gray-800 flex justify-center items-center overflow-hidden h-32">
+                            <div className="form-group mb-1">
+                                <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: 'black', borderRadius: '0.25rem', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', height: '8rem' }}>
                                     {formData.images ? (
-                                        <img src={formData.images} alt="Wall Preview" className="w-full h-full object-cover rounded opacity-80" onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Image+URL" }} />
+                                        <img src={formData.images} alt="Wall Preview" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.25rem', opacity: '0.8' }} onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Image+URL" }} />
                                     ) : (
-                                        <div className="text-muted text-sm flex flex-col items-center">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-50"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                        <div className="text-muted" style={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '0.5rem', opacity: '0.5' }}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                             Image Preview
                                         </div>
                                     )}
                                 </div>
                             </div>
                         </div>
-                        <div className="md:col-span-2 mt-6 flex gap-4 pt-6 border-t border-gray-800">
-                            <button type="submit" className="btn btn-primary px-8 text-lg">{editingWall ? 'Update Listing' : 'Submit Listing'}</button>
+
+                        <div className="form-actions form-full-width">
+                            <button type="submit" className="btn btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1.125rem' }}>{editingWall ? 'Update Listing' : 'Submit Listing'}</button>
                             {editingWall && (
                                 <button type="button" className="btn btn-outline" onClick={() => { setShowForm(false); setEditingWall(null); }}>Discard Changes</button>
                             )}
@@ -255,41 +264,41 @@ const OwnerDashboard = () => {
             {!showForm && (
                 <>
                     {/* KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div className="card-concrete p-6 border-l-4" style={{ borderLeftColor: 'var(--success)' }}>
-                            <div className="flex justify-between items-start">
+                    <div className="kpi-grid">
+                        <div className="card-concrete kpi-card" style={{ borderLeftColor: 'var(--success)' }}>
+                            <div className="kpi-card-header">
                                 <div>
-                                    <h3 className="text-xs text-muted font-bold uppercase tracking-wider mb-2">Net Earnings</h3>
-                                    <p className="text-3xl font-black text-white">₹{(totalEarnings / 100000).toFixed(1)}L</p>
+                                    <h3 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Net Earnings</h3>
+                                    <p style={{ fontSize: '1.875rem', fontWeight: '900', color: 'white', margin: 0 }}>₹{(totalEarnings / 100000).toFixed(1)}L</p>
                                 </div>
-                                <div className="p-2 bg-dark rounded-lg text-success">
+                                <div className="kpi-icon" style={{ color: 'var(--success)' }}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="card-concrete p-6 border-l-4" style={{ borderLeftColor: 'var(--accent)' }}>
-                            <div className="flex justify-between items-start">
+                        <div className="card-concrete kpi-card" style={{ borderLeftColor: 'var(--accent)' }}>
+                            <div className="kpi-card-header">
                                 <div>
-                                    <h3 className="text-xs text-muted font-bold uppercase tracking-wider mb-2">Overall Occupancy</h3>
-                                    <p className="text-3xl font-black text-white">{occupancyRate}%</p>
+                                    <h3 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Overall Occupancy</h3>
+                                    <p style={{ fontSize: '1.875rem', fontWeight: '900', color: 'white', margin: 0 }}>{occupancyRate}%</p>
                                 </div>
-                                <div className="p-2 bg-dark rounded-lg text-accent">
+                                <div className="kpi-icon" style={{ color: 'var(--accent)' }}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                                 </div>
                             </div>
-                            <div className="w-full bg-gray-800 h-1.5 mt-4 rounded-full overflow-hidden">
-                                <div className="bg-accent h-full shadow-[0_0_10px_var(--accent-glow)]" style={{ width: `${occupancyRate}%` }}></div>
+                            <div style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', height: '0.375rem', marginTop: '1rem', borderRadius: '9999px', overflow: 'hidden' }}>
+                                <div style={{ backgroundColor: 'var(--accent)', height: '100%', width: `${occupancyRate}%`, boxShadow: '0 0 10px var(--accent-glow)' }}></div>
                             </div>
                         </div>
 
-                        <div className="card-concrete p-6 border-l-4" style={{ borderLeftColor: 'var(--warning)' }}>
-                            <div className="flex justify-between items-start">
+                        <div className="card-concrete kpi-card" style={{ borderLeftColor: 'var(--warning)' }}>
+                            <div className="kpi-card-header">
                                 <div>
-                                    <h3 className="text-xs text-muted font-bold uppercase tracking-wider mb-2">Pending Inquiries</h3>
-                                    <p className="text-3xl font-black text-white">{pendingRequests}</p>
+                                    <h3 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Pending Inquiries</h3>
+                                    <p style={{ fontSize: '1.875rem', fontWeight: '900', color: 'white', margin: 0 }}>{pendingRequests}</p>
                                 </div>
-                                <div className="p-2 bg-dark rounded-lg text-warning">
+                                <div className="kpi-icon" style={{ color: 'var(--warning)' }}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                                 </div>
                             </div>
@@ -297,10 +306,10 @@ const OwnerDashboard = () => {
                     </div>
 
                     {/* CHARTS ROW */}
-                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                    <div className="chart-grid">
                         {/* 1. Bar Chart: Revenue by Wall */}
-                        <div className="card-concrete p-6 md:col-span-2">
-                            <h3 className="text-lg font-bold mb-6">Earnings by Location</h3>
+                        <div className="card-concrete chart-main" style={{ padding: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Earnings by Location</h3>
                             <div style={{ height: '300px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={revenueData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
@@ -321,8 +330,8 @@ const OwnerDashboard = () => {
                         </div>
 
                         {/* 2. Pie Chart: Booking Status Breakdown */}
-                        <div className="card-concrete p-6 md:col-span-1">
-                            <h3 className="text-lg font-bold mb-6">Historical Bookings</h3>
+                        <div className="card-concrete" style={{ padding: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Historical Bookings</h3>
                             <div style={{ height: '300px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
@@ -346,42 +355,45 @@ const OwnerDashboard = () => {
                     </div>
 
                     {/* LOWER GRIDS: Inventory & Requests */}
-                    <div className="grid lg:grid-cols-2 gap-8">
+                    <div className="content-grid">
 
                         {/* Booking Requests */}
-                        <div className="card-concrete flex flex-col h-full">
-                            <div className="p-6 border-b border-gray-800 flex justify-between items-center" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                                <h2 className="text-xl font-bold">Booking Inbox</h2>
-                                {pendingRequests > 0 && <span className="bg-warning text-dark px-3 py-1 rounded-full text-xs font-bold">{pendingRequests} Pending</span>}
+                        <div className="card-concrete">
+                            <div className="card-header">
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: 0 }}>Booking Inbox</h2>
+                                {pendingRequests > 0 && <span className="badge badge-warning">{pendingRequests} Pending</span>}
                             </div>
-                            <div className="overflow-y-auto w-full" style={{ maxHeight: '500px' }}>
+                            <div className="list-container">
                                 {(bookings || []).map(booking => {
                                     const isPending = booking.bookingStatus === 'pending' || booking.status === 'pending_approval';
                                     return (
-                                        <div key={booking._id} className="p-6 border-b border-gray-800 transition-colors hover:bg-white/5" style={{ backgroundColor: isPending ? 'rgba(255, 179, 0, 0.05)' : 'transparent' }}>
-                                            <div className="flex justify-between items-start mb-3">
+                                        <div key={booking._id} className="list-item" style={isPending ? { backgroundColor: 'rgba(245, 158, 11, 0.05)' } : {}}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
                                                 <div>
-                                                    <h4 className="font-bold text-lg text-white mb-1">{booking.wall ? booking.wall.title : 'Deleted Space'}</h4>
-                                                    <p className="text-sm text-muted">Client: <span className="text-accent font-bold">{booking.advertiser?.name || 'Private Brand'}</span></p>
+                                                    <h4 style={{ fontWeight: 'bold', fontSize: '1.125rem', color: 'white', margin: '0 0 0.25rem 0' }}>{booking.wall ? booking.wall.title : 'Deleted Space'}</h4>
+                                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>Client: <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{booking.advertiser?.name || 'Private Brand'}</span></p>
                                                 </div>
-                                                <div className="text-right">
-                                                    <span className="font-black text-xl text-success">₹{((booking.totalAmount || 0) * 0.9).toLocaleString()}</span>
-                                                    <p className="text-xs text-muted mt-1">Net Payout (-10%)</p>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    <span style={{ fontWeight: '900', fontSize: '1.25rem', color: 'var(--success)' }}>₹{((booking.totalAmount || 0) * 0.9).toLocaleString()}</span>
+                                                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0 0' }}>Net Payout (-10%)</p>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-4 text-sm text-muted mb-4 bg-dark py-2 px-3 rounded border border-gray-800">
-                                                <span className="flex items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> {new Date(booking.startDate || Date.now()).toLocaleDateString('en-GB')} - {new Date(booking.endDate || Date.now() + 86400000).toLocaleDateString('en-GB')}</span>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem', backgroundColor: 'var(--bg-dark)', padding: '0.5rem 0.75rem', borderRadius: '0.25rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                                    {new Date(booking.startDate || Date.now()).toLocaleDateString('en-GB')} - {new Date(booking.endDate || Date.now() + 86400000).toLocaleDateString('en-GB')}
+                                                </span>
                                             </div>
 
                                             {isPending ? (
-                                                <div className="flex gap-3 mt-4">
-                                                    <button className="btn btn-primary bg-success hover:bg-green-600 border-none flex-1 text-sm py-2 shadow-none" onClick={() => handleBookingAction(booking._id, 'confirmed')}>Approve</button>
-                                                    <button className="btn btn-outline border-danger text-danger hover:bg-danger hover:text-white flex-1 text-sm py-2" onClick={() => handleBookingAction(booking._id, 'cancelled')}>Decline</button>
+                                                <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+                                                    <button className="btn" style={{ flex: 1, backgroundColor: 'var(--success)', color: 'white', padding: '0.5rem', fontSize: '0.875rem' }} onClick={() => handleBookingAction(booking._id, 'confirmed')}>Approve</button>
+                                                    <button className="btn btn-outline" style={{ flex: 1, borderColor: 'var(--danger)', color: 'var(--danger)', padding: '0.5rem', fontSize: '0.875rem' }} onClick={() => handleBookingAction(booking._id, 'cancelled')}>Decline</button>
                                                 </div>
                                             ) : (
-                                                <div className="mt-4">
-                                                    <span className={`text-xs font-bold px-3 py-1.5 rounded uppercase tracking-wider ${['confirmed', 'active', 'completed'].includes(booking.bookingStatus) ? 'bg-success/20 text-success border border-success/30' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}>
+                                                <div style={{ marginTop: '1rem' }}>
+                                                    <span className={`status-badge ${['confirmed', 'active', 'completed'].includes(booking.bookingStatus) ? 'status-success' : 'status-default'}`}>
                                                         Status: {booking?.bookingStatus || 'Unknown'}
                                                     </span>
                                                 </div>
@@ -390,8 +402,8 @@ const OwnerDashboard = () => {
                                     );
                                 })}
                                 {(!bookings || bookings.length === 0) && (
-                                    <div className="p-12 text-center flex flex-col items-center justify-center opacity-50">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mb-4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                    <div style={{ padding: '3rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: '0.5' }}>
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ marginBottom: '1rem' }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                                         <span>Inbox Zero. No requests right now.</span>
                                     </div>
                                 )}
@@ -399,36 +411,36 @@ const OwnerDashboard = () => {
                         </div>
 
                         {/* Inventory Management */}
-                        <div className="card-concrete flex flex-col h-full">
-                            <div className="p-6 border-b border-gray-800 flex justify-between items-center" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                                <h2 className="text-xl font-bold">My Spaces</h2>
-                                <span className="text-xs font-bold text-muted uppercase tracking-wider">{activeWallsCount} Active</span>
+                        <div className="card-concrete">
+                            <div className="card-header">
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: 0 }}>My Spaces</h2>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{activeWallsCount} Active</span>
                             </div>
-                            <div className="overflow-y-auto w-full" style={{ maxHeight: '500px' }}>
+                            <div className="list-container">
                                 {(walls || []).map(wall => (
-                                    <div key={wall._id} className="p-5 border-b border-gray-800 hover:bg-white/5 transition-colors flex gap-4 items-center">
-                                        <div className="w-20 h-16 bg-dark rounded overflow-hidden flex-shrink-0 border border-gray-700">
-                                            <img src={wall.images?.[0] || 'https://images.unsplash.com/photo-1542204637-e67bc7d41e48?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} alt="wall" className="w-full h-full object-cover" onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x200?text=No+Image" }} />
+                                    <div key={wall._id} className="list-item" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                        <div className="space-image-container">
+                                            <img src={wall.images?.[0] || 'https://images.unsplash.com/photo-1542204637-e67bc7d41e48?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} alt="wall" onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x200?text=No+Image" }} />
                                         </div>
-                                        <div className="flex-grow">
-                                            <h4 className="font-bold text-white mb-1 leading-tight">{wall.title}</h4>
-                                            <div className="text-xs text-muted flex gap-2 items-center flex-wrap">
-                                                <span className="font-bold text-primary">₹{wall?.basePrice?.toLocaleString()}</span>
+                                        <div style={{ flexGrow: 1 }}>
+                                            <h4 style={{ fontWeight: 'bold', color: 'white', margin: '0 0 0.25rem 0', lineHeight: 1.2 }}>{wall.title}</h4>
+                                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                                <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>₹{wall?.basePrice?.toLocaleString()}</span>
                                                 <span>•</span>
-                                                <span className={wall.status === 'approved' ? 'text-success font-bold' : 'text-warning font-bold'}>{wall?.status?.replace('_', ' ').toUpperCase() || 'APPROVED'}</span>
+                                                <span style={{ fontWeight: 'bold', color: wall.status === 'approved' ? 'var(--success)' : 'var(--warning)' }}>{wall?.status?.replace('_', ' ').toUpperCase() || 'APPROVED'}</span>
                                                 <span>•</span>
-                                                <span className={wall.availability === 'available' ? 'text-success' : 'text-danger'}>{wall?.availability?.toUpperCase() || 'AVAILABLE'}</span>
+                                                <span style={{ color: wall.availability === 'available' ? 'var(--success)' : 'var(--danger)' }}>{wall?.availability?.toUpperCase() || 'AVAILABLE'}</span>
                                             </div>
                                         </div>
-                                        <div className="flex gap-2 min-w-[200px] justify-end">
-                                            <button className="flex-1 btn btn-outline" style={{ padding: '0.4rem', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => handleEditClick(wall)}>Edit</button>
-                                            <button className="flex-1 btn border border-danger text-danger hover:bg-danger hover:text-white" style={{ padding: '0.4rem', backgroundColor: 'transparent' }} onClick={() => handleRemoveWall(wall._id)}>Delete</button>
+                                        <div style={{ display: 'flex', gap: '0.5rem', minWidth: '160px', justifyContent: 'flex-end' }}>
+                                            <button className="btn btn-outline" style={{ flex: 1, padding: '0.4rem', fontSize: '0.875rem' }} onClick={() => handleEditClick(wall)}>Edit</button>
+                                            <button className="btn" style={{ flex: 1, padding: '0.4rem', fontSize: '0.875rem', border: '1px solid var(--danger)', color: 'var(--danger)', backgroundColor: 'transparent' }} onClick={() => handleRemoveWall(wall._id)}>Delete</button>
                                         </div>
                                     </div>
                                 ))}
                                 {(!walls || walls.length === 0) && (
-                                    <div className="p-12 text-center flex flex-col items-center justify-center opacity-50">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mb-4"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <div style={{ padding: '3rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: '0.5' }}>
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ marginBottom: '1rem' }}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                         <span>No spaces listed yet. List your first space above.</span>
                                     </div>
                                 )}

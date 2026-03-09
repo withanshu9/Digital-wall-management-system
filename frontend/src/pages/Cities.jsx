@@ -3,12 +3,12 @@ import axios from 'axios';
 import WallCard from '../components/WallCard';
 
 const topCities = [
-    { name: 'Mumbai', image: '/assets/city_mumbai.png' },
-    { name: 'Delhi NCR', image: '/assets/city_delhi.png' },
-    { name: 'Bangalore', image: '/assets/city_bangalore.png' },
-    { name: 'Hyderabad', image: '/assets/city_hyderabad.png' },
-    { name: 'Chennai', image: '/assets/city_chennai.png' },
-    { name: 'Pune', image: '/assets/city_pune.png' }
+    { name: 'Mumbai', image: 'https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { name: 'Delhi NCR', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { name: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { name: 'Hyderabad', image: 'https://images.unsplash.com/photo-1580145892582-720443916698?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { name: 'Chennai', image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f7415e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+    { name: 'Pune', image: 'https://images.unsplash.com/photo-1558455610-8647ac2b6c16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
 ];
 
 const Cities = () => {
@@ -21,7 +21,7 @@ const Cities = () => {
         const fetchWalls = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('/api/walls');
+                const response = await axios.get('http://localhost:5000/api/walls');
                 if (response.data.success) {
                     setWalls(response.data.data);
                 } else {
@@ -66,7 +66,7 @@ const Cities = () => {
                             }}
                         >
                             <img src={city.image} alt={city.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: activeCity === city.name ? 1 : 0.6, transition: '0.3s' }} />
-                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', transition: '0.3s' }} className={activeCity === city.name ? '' : 'hover:bg-black/20'}></div>
+                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', transition: '0.3s' }}></div>
                             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <h3 style={{ margin: 0, color: '#fff', fontSize: '1.4rem', fontWeight: 'bold', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>{city.name}</h3>
                             </div>

@@ -382,10 +382,10 @@ const Home = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
 
                     {/* Premium LED Wall */}
-                    <div className="group" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
-                            <img src="/assets/media__1772986839681.jpg" alt="Premium LED Wall" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-105" />
-                            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--card-bg) 0%, rgba(30,30,46,0) 40%)', zIndex: 1 }}></div>
+                    <div className="card-concrete" style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', transition: 'transform 0.3s', cursor: 'pointer' }}>
+                        <div style={{ height: '200px', backgroundColor: '#000', position: 'relative' }}>
+                            <img src="/assets/hero_led_billboard.png" alt="LED Video Walls" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,13,13,1), transparent)' }}></div>
                         </div>
                         <div style={{ padding: '0 32px 32px 32px', flex: 1, position: 'relative', zIndex: 2 }}>
                             <h3 style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#fff', marginBottom: '12px' }}>Premium LED Wall</h3>
@@ -396,7 +396,7 @@ const Home = () => {
                     {/* High Traffic Location */}
                     <div className="group" style={{ backgroundColor: 'var(--card-bg)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
-                            <img src="/assets/media__1772986839720.jpg" alt="High Traffic Location" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-105" />
+                            <img src="/assets/premium_traffic_location.png" alt="High Traffic Location" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-105" />
                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--card-bg) 0%, rgba(30,30,46,0) 40%)', zIndex: 1 }}></div>
                         </div>
                         <div style={{ padding: '0 32px 32px 32px', flex: 1, position: 'relative', zIndex: 2 }}>
@@ -416,10 +416,10 @@ const Home = () => {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
                     {[
-                        { title: 'LED Video Walls', image: 'https://images.unsplash.com/photo-1627051992011-8575003c3162?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Dynamic, high-brightness digital displays' },
+                        { title: 'LED Video Walls', image: '/assets/ad_format_led.png', description: 'Dynamic, high-brightness digital displays' },
                         { title: 'Static Painted Walls', image: '/assets/ad_format_painted.png', description: 'Traditional, long-lasting brand murals' },
                         { title: 'Flex Banners', image: '/assets/ad_format_flex.png', description: 'Cost-effective, large format print ads' },
-                        { title: 'Transit Displays', image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', description: 'Bus shelters and metro station branding' }
+                        { title: 'Transit Displays', image: '/assets/ad_format_transit.png', description: 'Bus shelters and metro station branding' }
                     ].map((cat, idx) => (
                         <div key={idx} className="group" style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', height: '300px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.05)' }}>
                             <img src={cat.image} alt={cat.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-110" />
@@ -446,10 +446,10 @@ const Home = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
                         {[
-                            { city: 'Mumbai', image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '120+ Spaces' },
-                            { city: 'Delhi NCR', image: 'https://images.unsplash.com/photo-1588693892816-24d193f45ac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '150+ Spaces' },
-                            { city: 'Bangalore', image: 'https://images.unsplash.com/photo-1542204646-7c05b8ed34b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '90+ Spaces' },
-                            { city: 'Hyderabad', image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', properties: '85+ Spaces' }
+                            { city: 'Mumbai', image: '/assets/city_mumbai_1772991993784.png', properties: '120+ Spaces' },
+                            { city: 'Delhi NCR', image: '/assets/city_delhi_1772992025860.png', properties: '150+ Spaces' },
+                            { city: 'Bangalore', image: '/assets/city_bangalore_1772992066653.png', properties: '90+ Spaces' },
+                            { city: 'Hyderabad', image: '/assets/city_hyderabad_1772992108814.png', properties: '85+ Spaces' }
                         ].map((loc, idx) => (
                             <div key={idx} className="group" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '200px', cursor: 'pointer' }}>
                                 <img src={loc.image} alt={loc.city} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }} className="group-hover:scale-110" />
